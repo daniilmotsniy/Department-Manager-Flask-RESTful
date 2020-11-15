@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Main
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col">
+    {% for d in departments %}
+            <h4>{{d.name}}</h4>
+            {% for e in employees %}
+                <div class="row">
+                {% if e.department == d.name %}
+                    <div class="alert alert-success">
+                        <h6>{{e.name}}</h6>
+                        <h6>{{e.salary}}$</h6>
+                        <a href="/{{e.id}}/delete_employee" class="btn btn-outline-danger btn-sm">Delete</a>
+                        <a href="/{{e.id}}/edit_employee" class="btn btn-outline-info btn-sm">Update</a>
+                    </div>
+                {% endif %}
+                </div>
+            {% endfor %}
+                 <div class="row">
+                    <div class="alert alert-warning">
+                        <a href="/{{d.id}}/delete_department" class="btn btn-outline-danger btn-sm">Remove</a>
+                        <a href="/{{d.id}}/edit_department" class="btn btn-outline-info btn-sm">Rename</a>
+                    </div><br>
+                 </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}
