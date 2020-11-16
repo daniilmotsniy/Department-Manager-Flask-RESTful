@@ -1,15 +1,39 @@
-{% extends 'base.html' %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Title</title>
+</head>
+<body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+      <h5 class="my-0 mr-md-auto font-weight-normal">Company management tool</h5>
+      <nav class="my-2 my-md-0 mr-md-3">
+          <a class="p-2 text-dark" href="/">Main</a>
+          <a class="p-2 text-dark" href="/employees">Employees</a>
+          <a class="p-2 text-dark" href="/departments">Departments</a>
+          <a class="p-2 text-dark" href="/search">Search</a>
+      </nav>
+      <nav class="my-2 my-md-0 mr-md-3">
+          <a class="btn btn-outline-primary" href="/add_employee">Add employee</a>
+          <a class="btn btn-outline-primary" href="/add_department">Add department</a>
+      </nav>
+    </div>
+    <div class="container">
+      <div class="container">
+          <h3>Rename department</h3><br>
+          <form method="post">
+              <input type="text" class="form-control" id="name" name="name" required><br>
+              <input class="btn btn-lg btn-primary" type="submit" value="Rename"><br>
+          </form>
+      </div>
+    </div>
+    <footer class="container">
 
-{% block title %}
-Add employee
-{% endblock %}
-
-{% block body %}
-<div class="container">
-    <h3>Rename department</h3><br>
-    <form method="post">
-        <input type="text" class="form-control" id="name" name="name" value="{{departments.name}}" required><br>
-        <input class="btn btn-lg btn-primary" type="submit" value="Rename"><br>
-    </form>
-</div>
-{% endblock %}
+    </footer>
+</body>
+</html>

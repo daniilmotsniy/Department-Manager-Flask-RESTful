@@ -1,23 +1,48 @@
-{% extends 'base.html' %}
-
-{% block title %}
-Departments
-{% endblock %}
-
-{% block body %}
-<div class="container">
-    <div class="col">
-    <h3>Departments</h3>
-    <br>
-        {% for d in departments %}
-            <h4>{{d.name}}</h4>
-            <h5>Average salary is {{salaries[d.id]}}</h5>
-                <div>
-                    <a href="/{{d.id}}/delete_department" class="btn btn-outline-danger btn-sm">Delete</a>
-                    <a href="/{{d.id}}/edit_department" class="btn btn-outline-info btn-sm">Rename</a>
-                </div>
-            <br>
-        {% endfor %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Title</title>
+</head>
+<body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+      <h5 class="my-0 mr-md-auto font-weight-normal">Company management tool</h5>
+      <nav class="my-2 my-md-0 mr-md-3">
+          <a class="p-2 text-dark" href="/">Main</a>
+          <a class="p-2 text-dark" href="/employees">Employees</a>
+          <a class="p-2 text-dark" href="/departments">Departments</a>
+          <a class="p-2 text-dark" href="/search">Search</a>
+      </nav>
+      <nav class="my-2 my-md-0 mr-md-3">
+          <a class="btn btn-outline-primary" href="/add_employee">Add employee</a>
+          <a class="btn btn-outline-primary" href="/add_department">Add department</a>
+      </nav>
     </div>
-</div>
-{% endblock %}
+    <div class="container">
+      <div class="container">
+          <h3>Rename department</h3><br>
+          <div class="container">
+              <div class="col">
+              <h3>Departments</h3>
+              <br>
+                    <h4>Name</h4>
+                    <h5>Average salary is $</h5>
+                        <div>
+                            <a href="/{{d.id}}/delete_department" class="btn btn-outline-danger btn-sm">Delete</a>
+                            <a href="/{{d.id}}/edit_department" class="btn btn-outline-info btn-sm">Rename</a>
+                        </div>
+                    <br>
+              </div>
+          </div>
+      </div>
+    </div>
+    <footer class="container">
+
+    </footer>
+</body>
+</html>

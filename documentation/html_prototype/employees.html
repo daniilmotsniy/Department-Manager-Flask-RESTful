@@ -1,25 +1,47 @@
-{% extends 'base.html' %}
-
-{% block title %}
-Employees
-{% endblock %}
-
-{% block body %}
-<div class="container">
-    <div class="col">
-    <h3>Employees</h3>
-    <br>
-        {% for e in employees %}
-            <div>
-                <h5>{{e.name}}</h5>
-                <h6>{{e.department}}</h6>
-                <h6>{{e.salary}}$</h6>
-                <h6>{{e.b_date}}</h6>
-                <a href="/{{e.id}}/delete_employee" class="btn btn-outline-danger btn-sm">Delete</a>
-                <a href="/{{e.id}}/edit_employee" class="btn btn-outline-info btn-sm">Update</a>
-            </div>
-        <br>
-        {% endfor %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Title</title>
+</head>
+<body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+      <h5 class="my-0 mr-md-auto font-weight-normal">Company management tool</h5>
+      <nav class="my-2 my-md-0 mr-md-3">
+          <a class="p-2 text-dark" href="/">Main</a>
+          <a class="p-2 text-dark" href="/employees">Employees</a>
+          <a class="p-2 text-dark" href="/departments">Departments</a>
+          <a class="p-2 text-dark" href="/search">Search</a>
+      </nav>
+      <nav class="my-2 my-md-0 mr-md-3">
+          <a class="btn btn-outline-primary" href="/add_employee">Add employee</a>
+          <a class="btn btn-outline-primary" href="/add_department">Add department</a>
+      </nav>
     </div>
-</div>
-{% endblock %}
+    <div class="container">
+      <div class="container">
+          <div class="col">
+              <h3>Employees</h3>
+              <br>
+                      <div>
+                          <h5>Name</h5>
+                          <h6>Department</h6>
+                          <h6>Salary</h6>
+                          <h6>Birth date</h6>
+                          <a href="/{{e.id}}/delete_employee" class="btn btn-outline-danger btn-sm">Delete</a>
+                          <a href="/{{e.id}}/edit_employee" class="btn btn-outline-info btn-sm">Update</a>
+                      </div>
+                  <br>
+              </div>
+          </div>
+    </div>
+    <footer class="container">
+
+    </footer>
+</body>
+</html>
