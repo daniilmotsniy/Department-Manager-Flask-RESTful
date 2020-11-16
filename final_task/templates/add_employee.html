@@ -8,9 +8,13 @@ Add employee
 <div class="container">
     <h3>Add new employee</h3><br>
     <form method="post">
-        <input type="text" class="form-control" id="department" name="department" placeholder="Department" required><br>
+        <select class="form-control" id="department" name="department" required>
+            {% for d in departments %}
+              <option>{{d.name}}</option>
+            {% endfor %}
+        </select><br>
         <input type="text" class="form-control" id="name" name="name" placeholder="Name" required><br>
-        <input type="text" class="form-control" id="b_date" name="b_date" placeholder="Birth date" required><br>
+        <input type="date" class="form-control" id="b_date" name="b_date" required><br>
         <input type="text" class="form-control" id="salary" name="salary" placeholder="Salary" required><br>
         <input class="btn btn-lg btn-primary" type="submit" value="Add"><br>
     </form>

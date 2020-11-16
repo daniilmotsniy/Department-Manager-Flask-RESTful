@@ -16,6 +16,9 @@ class Department(db.Model):
     def __init__(self, name):
         self.name = name
 
+    def get_name(self):
+        return self.name
+
 
 class Employee(db.Model):
     __tablename__ = "employee"
@@ -31,6 +34,9 @@ class Employee(db.Model):
         self.name = name
         self.b_date = b_date
         self.salary = salary
+
+    def get_salary(self):
+        return self.salary
 
 
 @app.route("/add_department", methods=["POST", "GET"])
@@ -78,11 +84,12 @@ def edit_department(id):
             return Exception
     else:
         departments = Department.query.get(id)
-        return render_template("edit_department.html", departments=departments)
+        return render_template("department.html", departments=departments)
 
 
 @app.route("/add_employee", methods=["POST", "GET"])
 def add_employee():
+    departments = Department.query.all()
     if request.method == "POST":
         department = request.form["department"]
         name = request.form["name"]
@@ -96,7 +103,7 @@ def add_employee():
         except:
             return Exception
     else:
-        return render_template("add_employee.html")
+        return render_template("add_employee.html", departments=departments)
 
 
 @app.route("/<int:id>/delete_employee")
@@ -125,12 +132,48 @@ def edit_employee(id):
             return Exception
     else:
         employees = Employee.query.get(id)
-        return render_template("edit_employee.html", employees=employees)
+        return render_template("employee.html", employees=employees)
 
 
-@app.route("/search")
-def about():
-    return render_template("search.html")
+def get_avg_salary(department, employees) -> float:
+    sum, count = 0, 0
+    for e in employees:
+        if e.department == department:
+            sum += e.salary
+            count += 1
+    if count == 0:
+        return 0.0
+    return float(sum / count)
+
+
+@app.route("/departments")
+def departments():
+    employees = Employee.query.all()
+    departments = Department.query.all()
+    salaries = {0: 0}
+    for d in departments:
+        salaries[d.id] = get_avg_salary(d.name, employees)
+
+    return render_template("departments.html", departments=departments, salaries=salaries)
+
+
+@app.route("/employees")
+def employees():
+    employees = Employee.query.all()
+    return render_template("employees.html", employees=employees)
+
+
+@app.route("/search", methods=["POST", "GET"])
+def search():
+    employees = Employee.query.all()
+    res = []
+    if request.method == "POST":
+        for e in employees:
+            if request.form["b_date"] == e.b_date:
+                res.append(e)
+        return render_template("search.html", res=res)
+    else:
+        return render_template("search.html")
 
 
 @app.route("/")
@@ -143,4 +186,3 @@ def index():
 if __name__ == "__main__":
     db.create_all()
     app.run(debug=True)
-

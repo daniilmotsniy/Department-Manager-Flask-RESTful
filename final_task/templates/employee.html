@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add employee
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h3>Edit employee</h3><br>
+    <form method="post">
+        <input type="text" class="form-control" id="department" name="department" value="{{employees.department}}" required><br>
+        <input type="text" class="form-control" id="name" name="name" value="{{employees.name}}" required><br>
+        <input type="date" class="form-control" id="b_date" name="b_date" value="{{employees.b_date}}" required><br>
+        <input type="text" class="form-control" id="salary" name="salary" value="{{employees.salary}}" required><br>
+        <input class="btn btn-lg btn-primary" type="submit" value="Edit"><br>
+    </form>
+</div>
+{% endblock %}
