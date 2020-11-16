@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Employees
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col">
+    <h3>Employees</h3>
+    <br>
+        {% for e in employees %}
+            <div>
+                <h5>{{e.name}}</h5>
+                <h6>{{e.department}}</h6>
+                <h6>{{e.salary}}$</h6>
+                <h6>{{e.b_date}}</h6>
+                <a href="/{{e.id}}/delete_employee" class="btn btn-outline-danger btn-sm">Delete</a>
+                <a href="/{{e.id}}/edit_employee" class="btn btn-outline-info btn-sm">Update</a>
+            </div>
+        <br>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

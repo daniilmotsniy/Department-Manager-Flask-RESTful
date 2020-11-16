@@ -57,7 +57,11 @@ def add_department():
 @app.route("/<int:id>/delete_department")
 def delete_department(id):
     department = Department.query.get_or_404(id)
+    employees = Employee.query.all()
     try:
+        for e in employees:
+            if e.department == department.name:
+                db.session.delete(e)
         db.session.delete(department)
         db.session.commit()
         return redirect('/')
@@ -120,6 +124,7 @@ def delete_employee(id):
 @app.route("/<int:id>/edit_employee", methods=["POST", "GET"])
 def edit_employee(id):
     employee = Employee.query.get(id)
+    departments = Department.query.all()
     if request.method == "POST":
         employee.department = request.form["department"]
         employee.name = request.form["name"]
@@ -132,25 +137,25 @@ def edit_employee(id):
             return Exception
     else:
         employees = Employee.query.get(id)
-        return render_template("employee.html", employees=employees)
+        return render_template("employee.html", employees=employees, departments=departments)
 
 
-def get_avg_salary(department, employees) -> float:
+def get_avg_salary(department, employees) -> str:
     sum, count = 0, 0
     for e in employees:
         if e.department == department:
             sum += e.salary
             count += 1
     if count == 0:
-        return 0.0
-    return float(sum / count)
+        return format(0, '.2f')
+    return format(float(sum / count), '.2f')
 
 
 @app.route("/departments")
 def departments():
     employees = Employee.query.all()
     departments = Department.query.all()
-    salaries = {0: 0}
+    salaries = {}
     for d in departments:
         salaries[d.id] = get_avg_salary(d.name, employees)
 
@@ -166,12 +171,15 @@ def employees():
 @app.route("/search", methods=["POST", "GET"])
 def search():
     employees = Employee.query.all()
-    res = []
+    res_by_date = []
+    res_by_period = []
     if request.method == "POST":
         for e in employees:
             if request.form["b_date"] == e.b_date:
-                res.append(e)
-        return render_template("search.html", res=res)
+                res_by_date.append(e)
+        # for e in employees:
+        #     if
+        return render_template("search.html", res_by_date=res_by_date, res_by_period=res_by_period)
     else:
         return render_template("search.html")
 

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Departments
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col">
+    <h3>Departments</h3>
+    <br>
+        {% for d in departments %}
+            <h4>{{d.name}}</h4>
+            <h5>Average salary is {{salaries[d.id]}}</h5>
+                <div>
+                    <a href="/{{d.id}}/delete_department" class="btn btn-outline-danger btn-sm">Delete</a>
+                    <a href="/{{d.id}}/edit_department" class="btn btn-outline-info btn-sm">Rename</a>
+                </div>
+            <br>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
