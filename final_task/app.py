@@ -1,10 +1,13 @@
 from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:root@localhost/final_task"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = "false"
 db = SQLAlchemy(app)
+
+migrate = Migrate(app, db)
 
 
 class Department(db.Model):
