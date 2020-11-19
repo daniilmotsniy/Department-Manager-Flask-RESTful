@@ -161,7 +161,6 @@ def departments():
     salaries = {}
     for d in departments:
         salaries[d.id] = get_avg_salary(d.name, employees)
-
     return render_template("departments.html", departments=departments, salaries=salaries)
 
 
@@ -171,20 +170,33 @@ def employees():
     return render_template("employees.html", employees=employees)
 
 
-@app.route("/search", methods=["POST", "GET"])
-def search():
+@app.route("/search/b_date", methods=["POST", "GET"])
+def search_by_date():
     employees = Employee.query.all()
     res_by_date = []
-    res_by_period = []
     if request.method == "POST":
         for e in employees:
             if request.form["b_date"] == e.b_date:
                 res_by_date.append(e)
-        # for e in employees:
-        #     if
-        return render_template("search.html", res_by_date=res_by_date, res_by_period=res_by_period)
-    else:
-        return render_template("search.html")
+        return render_template("search.html", res_by_date=res_by_date)
+    return render_template("search.html")
+
+
+@app.route("/search/b_period", methods=["POST", "GET"])
+def search_by_period():
+    employees = Employee.query.all()
+    res_by_period = []
+    if request.method == "POST":
+        for e in employees:
+            if request.form["b_date_from"] <= e.b_date <= request.form["b_date_to"]:
+                res_by_period.append(e)
+        return render_template("search.html", res_by_period=res_by_period)
+    return render_template("search.html")
+
+
+@app.route("/search")
+def search():
+    return render_template("search.html")
 
 
 @app.route("/")

@@ -1,8 +1,13 @@
-from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-
-app = Flask(__name__)
-db = SQLAlchemy(app)
+from app import db
 
 
+class Department(db.Model):
+    def __init__(self, model, id_, name):
+        __tablename__ = "department"
+        self.id = id_
+        self.name = name
 
+
+    def get_name(self):
+        return self.name

@@ -8,7 +8,7 @@ Search
 <div class="container">
     <div class="col">
         <h4>Search employee by birth date</h4>
-        <form method="post">
+        <form action="/search/b_date" method="post">
             <input type="date" class="form-control" id="b_date" name="b_date" required><br>
             <input class="btn btn-lg btn-primary" type="submit" value="Find"><br><br>
         </form>
@@ -22,7 +22,7 @@ Search
             </div>
             <br>
         {% endfor %}
-        <form method="post">
+        <form action="/search/b_period" method="post">
             <h4>Search employee by period between dates</h4>
             <input type="date" class="form-control" id="b_date_from" name="b_date_from" required><br>
             <input type="date" class="form-control" id="b_date_to" name="b_date_to" required><br>

@@ -10,12 +10,16 @@ Add employee
     <form method="post">
         <select class="form-control" id="department" name="department" required>
             {% for d in departments %}
-              <option>{{d.name}}</option>
+              {%if d.name == employees.department %}
+                <option selected>{{d.name}}</option>
+              {% else %}
+                <option>{{d.name}}</option>
+              {% endif %}
             {% endfor %}
         </select><br>
-        <input type="text" class="form-control" id="name" name="name" value="{{employees.name}}" required><br>
+        <input type="text" class="form-control" id="name" name="name" value="{{employees.name}}" pattern="[A-Za-z ]{1,100}" required><br>
         <input type="date" class="form-control" id="b_date" name="b_date" value="{{employees.b_date}}" required><br>
-        <input type="text" class="form-control" id="salary" name="salary" value="{{employees.salary}}" required><br>
+        <input type="number" class="form-control" id="salary" name="salary" value="{{employees.salary}}" pattern="[0-9]{1, 10000000}" required><br>
         <input class="btn btn-lg btn-primary" type="submit" value="Edit"><br>
     </form>
 </div>

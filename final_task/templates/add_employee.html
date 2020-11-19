@@ -13,9 +13,9 @@ Add employee
               <option>{{d.name}}</option>
             {% endfor %}
         </select><br>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Name" pattern="[A-Za-z]{1,100}" required><br>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Name" pattern="[A-Za-z ]{1,100}" required><br>
         <input type="date" class="form-control" id="b_date" name="b_date" required><br>
-        <input type="text" class="form-control" id="salary" name="salary" placeholder="Salary" pattern="[0-9]{1, 10000000}" required><br>
+        <input type="number" class="form-control" id="salary" name="salary" placeholder="Salary" pattern="[0-9]{1, 10000000}" required><br>
         <input class="btn btn-lg btn-primary" type="submit" value="Add"><br>
     </form>
 </div>
