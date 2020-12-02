@@ -1,0 +1,13 @@
+language: python
+
+sudo: false
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email:
+    recipients:
+      - daniilmotsnyi@gmail.com
+    on_success: never
+    on_failure: always
