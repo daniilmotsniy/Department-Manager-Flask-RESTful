@@ -1,16 +1,31 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import render_template, request, redirect, jsonify, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from sqlalchemy.ext.declarative import DeclarativeMeta
+from flask_restful import Api, Resource, abort, reqparse
+import json
+from final_task import create_app
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:root@localhost/final_task"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = "false"
+app = create_app()
+api = Api(app)
 db = SQLAlchemy(app)
 
-migrate = Migrate(app, db)
+
+class AlchemyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj.__class__, DeclarativeMeta):
+            fields = {}
+            for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
+                data = obj.__getattribute__(field)
+                try:
+                    json.dumps(data)
+                    fields[field] = data
+                except TypeError:
+                    fields[field] = None
+            return fields
+        return json.JSONEncoder.default(self, obj)
 
 
-class Department(db.Model):
+class DepartmentModel(db.Model):
     __tablename__ = "department"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -23,7 +38,7 @@ class Department(db.Model):
         return self.name
 
 
-class Employee(db.Model):
+class EmployeeModel(db.Model):
     __tablename__ = "employee"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -47,7 +62,7 @@ def add_department():
     if request.method == "POST":
         name = request.form["name"]
         try:
-            department = Department(name)
+            department = DepartmentModel(name)
             db.session.add(department)
             db.session.commit()
             return redirect('/')
@@ -59,8 +74,8 @@ def add_department():
 
 @app.route("/<int:id>/delete_department")
 def delete_department(id):
-    department = Department.query.get_or_404(id)
-    employees = Employee.query.all()
+    department = DepartmentModel.query.get_or_404(id)
+    employees = EmployeeModel.query.all()
     try:
         for e in employees:
             if e.department == department.name:
@@ -74,13 +89,13 @@ def delete_department(id):
 
 @app.route("/<int:id>/edit_department", methods=["POST", "GET"])
 def edit_department(id):
-    department = Department.query.get(id)
+    department = DepartmentModel.query.get(id)
     if request.method == "POST":
         tmp = department.name
         new_name = request.form["name"]
         department.name = new_name
         if tmp != new_name:
-            employees = Employee.query.all()
+            employees = EmployeeModel.query.all()
             for i in employees:
                 if i.department == tmp:
                     i.department = new_name
@@ -90,20 +105,20 @@ def edit_department(id):
         except:
             return Exception
     else:
-        departments = Department.query.get(id)
+        departments = DepartmentModel.query.get(id)
         return render_template("department.html", departments=departments)
 
 
 @app.route("/add_employee", methods=["POST", "GET"])
 def add_employee():
-    departments = Department.query.all()
+    departments = DepartmentModel.query.all()
     if request.method == "POST":
         department = request.form["department"]
         name = request.form["name"]
         b_date = request.form["b_date"]
         salary = request.form["salary"]
         try:
-            employee = Employee(department, name, b_date, salary)
+            employee = EmployeeModel(department, name, b_date, salary)
             db.session.add(employee)
             db.session.commit()
             return redirect('/')
@@ -115,7 +130,7 @@ def add_employee():
 
 @app.route("/<int:id>/delete_employee")
 def delete_employee(id):
-    employee = Employee.query.get_or_404(id)
+    employee = EmployeeModel.query.get_or_404(id)
     try:
         db.session.delete(employee)
         db.session.commit()
@@ -126,8 +141,8 @@ def delete_employee(id):
 
 @app.route("/<int:id>/edit_employee", methods=["POST", "GET"])
 def edit_employee(id):
-    employee = Employee.query.get(id)
-    departments = Department.query.all()
+    employee = EmployeeModel.query.get(id)
+    departments = DepartmentModel.query.all()
     if request.method == "POST":
         employee.department = request.form["department"]
         employee.name = request.form["name"]
@@ -139,7 +154,7 @@ def edit_employee(id):
         except:
             return Exception
     else:
-        employees = Employee.query.get(id)
+        employees = EmployeeModel.query.get(id)
         return render_template("employee.html", employees=employees, departments=departments)
 
 
@@ -156,8 +171,8 @@ def get_avg_salary(department, employees) -> str:
 
 @app.route("/departments")
 def departments():
-    employees = Employee.query.all()
-    departments = Department.query.all()
+    employees = EmployeeModel.query.all()
+    departments = DepartmentModel.query.all()
     salaries = {}
     for d in departments:
         salaries[d.id] = get_avg_salary(d.name, employees)
@@ -166,13 +181,13 @@ def departments():
 
 @app.route("/employees")
 def employees():
-    employees = Employee.query.all()
+    employees = EmployeeModel.query.all()
     return render_template("employees.html", employees=employees)
 
 
 @app.route("/search/b_date", methods=["POST", "GET"])
 def search_by_date():
-    employees = Employee.query.all()
+    employees = EmployeeModel.query.all()
     res_by_date = []
     if request.method == "POST":
         for e in employees:
@@ -184,7 +199,7 @@ def search_by_date():
 
 @app.route("/search/b_period", methods=["POST", "GET"])
 def search_by_period():
-    employees = Employee.query.all()
+    employees = EmployeeModel.query.all()
     res_by_period = []
     if request.method == "POST":
         for e in employees:
@@ -201,8 +216,8 @@ def search():
 
 @app.route("/")
 def index():
-    departments = Department.query.all()
-    employees = Employee.query.all()
+    departments = DepartmentModel.query.all()
+    employees = EmployeeModel.query.all()
     return render_template("index.html", departments=departments, employees=employees)
 
 
