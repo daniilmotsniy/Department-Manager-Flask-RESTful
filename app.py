@@ -1,46 +1,11 @@
-from flask import Flask, render_template, request, redirect
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
-from flask_restful import Api
+from flask import render_template, request, redirect
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:root@localhost/final_task"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = "false"
-api = Api(app)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+from config import BaseConfig
+from final_task import create_app
+from final_task import db
+from final_task.models import Department, Employee
 
-
-class Department(db.Model):
-    __tablename__ = "department"
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64))
-
-    def __init__(self, name):
-        self.name = name
-
-    def get_name(self):
-        return self.name
-
-
-class Employee(db.Model):
-    __tablename__ = "employee"
-
-    id = db.Column(db.Integer, primary_key=True)
-    department = db.Column(db.String(64))
-    name = db.Column(db.String(64))
-    b_date = db.Column(db.String(10))
-    salary = db.Column(db.Integer)
-
-    def __init__(self, department, name, b_date, salary):
-        self.department = department
-        self.name = name
-        self.b_date = b_date
-        self.salary = salary
-
-    def get_salary(self):
-        return self.salary
+app = create_app(BaseConfig)
 
 
 @app.route("/add_department", methods=["POST", "GET"])
@@ -144,69 +109,5 @@ def edit_employee(id):
         return render_template("employee.html", employees=employees, departments=departments)
 
 
-def get_avg_salary(department, employees) -> str:
-    sum, count = 0, 0
-    for e in employees:
-        if e.department == department:
-            sum += e.salary
-            count += 1
-    if count == 0:
-        return format(0, '.2f')
-    return format(float(sum / count), '.2f')
-
-
-@app.route("/departments")
-def departments():
-    employees = Employee.query.all()
-    departments = Department.query.all()
-    salaries = {}
-    for d in departments:
-        salaries[d.id] = get_avg_salary(d.name, employees)
-    return render_template("departments.html", departments=departments, salaries=salaries)
-
-
-@app.route("/employees")
-def employees():
-    employees = Employee.query.all()
-    return render_template("employees.html", employees=employees)
-
-
-@app.route("/search/b_date", methods=["POST", "GET"])
-def search_by_date():
-    employees = Employee.query.all()
-    res_by_date = []
-    if request.method == "POST":
-        for e in employees:
-            if request.form["b_date"] == e.b_date:
-                res_by_date.append(e)
-        return render_template("search.html", res_by_date=res_by_date)
-    return render_template("search.html")
-
-
-@app.route("/search/b_period", methods=["POST", "GET"])
-def search_by_period():
-    employees = Employee.query.all()
-    res_by_period = []
-    if request.method == "POST":
-        for e in employees:
-            if request.form["b_date_from"] <= e.b_date <= request.form["b_date_to"]:
-                res_by_period.append(e)
-        return render_template("search.html", res_by_period=res_by_period)
-    return render_template("search.html")
-
-
-@app.route("/search")
-def search():
-    return render_template("search.html")
-
-
-@app.route("/")
-def index():
-    departments = Department.query.all()
-    employees = Employee.query.all()
-    return render_template("index.html", departments=departments, employees=employees)
-
-
 if __name__ == "__main__":
-    db.create_all()
     app.run(debug=True)
