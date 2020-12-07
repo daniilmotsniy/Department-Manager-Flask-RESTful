@@ -27,7 +27,7 @@ class Employee(db.Model):
     salary = db.Column(db.Integer)
 
     def __init__(self, department, name, b_date, salary):
-        self.department_model.py = department
+        self.department = department
         self.name = name
         self.b_date = b_date
         self.salary = salary
@@ -36,4 +36,5 @@ class Employee(db.Model):
         return self.salary
 
     def to_json(self):
-        return {"id": self.id, "name": self.name, "b_date": self.b_date, "salary": self.salary}
+        return {"id": self.id, "name": self.name, "b_date": self.b_date, "salary": self.salary,
+                "department": self.department}

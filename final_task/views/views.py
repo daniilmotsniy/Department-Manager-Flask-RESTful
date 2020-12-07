@@ -3,25 +3,10 @@ from ..models import Department, Employee
 from . import user
 
 
-def get_avg_salary(department, employees) -> str:
-    sum, count = 0, 0
-    for e in employees:
-        if e.department == department:
-            sum += e.salary
-            count += 1
-    if count == 0:
-        return format(0, '.2f')
-    return format(float(sum / count), '.2f')
-
-
 @user.route("/departments")
 def departments():
-    employees = Employee.query.all()
     departments = Department.query.all()
-    salaries = {}
-    for d in departments:
-        salaries[d.id] = get_avg_salary(d.name, employees)
-    return render_template("departments.html", departments=departments, salaries=salaries)
+    return render_template("departments.html", departments=departments)
 
 
 @user.route("/employees")

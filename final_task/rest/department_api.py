@@ -35,7 +35,7 @@ class Department(Resource):
         args = parser.parse_args()
         department = serv.get_department_by_id(id)
         serv.edit_department(id, args.get('name', department['name']))
-        return "Department updated", 200
+        return "Department edited", 200
 
     @staticmethod
     def delete(id):

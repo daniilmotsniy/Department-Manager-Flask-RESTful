@@ -51,7 +51,7 @@ class Employee(Resource):
                                           args.get('department', employee['department']),
                                           args.get('salary', employee['salary']),
                                           args.get('b_date', employee['b_date']))
-        return "Employee updated", 200
+        return "Employee edited", 200
 
     @staticmethod
     def delete(id):

@@ -5,19 +5,12 @@ Departments
 {% endblock %}
 
 {% block body %}
+<script src="{{ url_for('static', filename='js/departments.js') }}"></script>
 <div class="container">
     <div class="col">
     <h3>Departments</h3>
     <br>
-        {% for d in departments %}
-            <h4>{{d.name}}</h4>
-            <h5>Average salary is {{salaries[d.id]}}</h5>
-                <div>
-                    <a href="/{{d.id}}/delete_department" class="btn btn-outline-danger btn-sm">Delete</a>
-                    <a href="/{{d.id}}/edit_department" class="btn btn-outline-info btn-sm">Rename</a>
-                </div>
-            <br>
-        {% endfor %}
+        <table class="table table-hover table-bordered margin-top"></table>
     </div>
 </div>
 {% endblock %}

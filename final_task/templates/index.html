@@ -5,23 +5,11 @@ Main
 {% endblock %}
 
 {% block body %}
+
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
 <div class="container">
-    <div class="container">
-    {% for d in departments %}
-            <h4>{{d.name}}</h4>
-            <br>
-                <div class="col">
-                    {% for e in employees %}
-                        {% if e.department == d.name %}
-                            <div class="col alert alert-info">
-                                <h6>{{e.name}}</h6>
-                                <h6>{{e.salary}}$</h6>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            <br>
-    {% endfor %}
-    </div>
+    <table id="dataTable" class="table table-hover table-bordered margin-top"></table>
+    <div id="data"></div>
 </div>
 {% endblock %}
