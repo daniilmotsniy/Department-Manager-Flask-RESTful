@@ -5,11 +5,12 @@ Add employee
 {% endblock %}
 
 {% block body %}
+<script src="{{ url_for('static', filename='js/department.js') }}"></script>
 <div class="container">
     <h3>Rename department</h3><br>
     <form method="post">
-        <input type="text" class="form-control" id="name" name="name" value="{{departments.name}}" required><br>
-        <input class="btn btn-lg btn-primary" type="submit" value="Rename"><br>
+        <input type="text" class="form-control" id="name" name="name" required><br>
+        <input class="btn btn-lg btn-primary" type="submit" value="Rename" onclick="onClick()"><br>
     </form>
 </div>
 {% endblock %}

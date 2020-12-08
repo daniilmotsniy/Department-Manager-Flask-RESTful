@@ -8,58 +8,6 @@ from final_task.models import Department, Employee
 app = create_app(BaseConfig)
 
 
-@app.route("/add_department", methods=["POST", "GET"])
-def add_department():
-    if request.method == "POST":
-        name = request.form["name"]
-        try:
-            department = Department(name)
-            db.session.add(department)
-            db.session.commit()
-            return redirect('/')
-        except:
-            return Exception
-    else:
-        return render_template("add_department.html")
-
-
-@app.route("/<int:id>/delete_department")
-def delete_department(id):
-    department = Department.query.get_or_404(id)
-    employees = Employee.query.all()
-    try:
-        for e in employees:
-            if e.department == department.name:
-                db.session.delete(e)
-        db.session.delete(department)
-        db.session.commit()
-        return redirect('/')
-    except:
-        return Exception
-
-
-@app.route("/<int:id>/edit_department", methods=["POST", "GET"])
-def edit_department(id):
-    department = Department.query.get(id)
-    if request.method == "POST":
-        tmp = department.name
-        new_name = request.form["name"]
-        department.name = new_name
-        if tmp != new_name:
-            employees = Employee.query.all()
-            for i in employees:
-                if i.department == tmp:
-                    i.department = new_name
-        try:
-            db.session.commit()
-            return redirect('/')
-        except:
-            return Exception
-    else:
-        departments = Department.query.get(id)
-        return render_template("department.html", departments=departments)
-
-
 @app.route("/add_employee", methods=["POST", "GET"])
 def add_employee():
     departments = Department.query.all()

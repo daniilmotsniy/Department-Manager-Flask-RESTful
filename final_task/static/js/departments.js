@@ -35,7 +35,7 @@ function employeesReceived(employees){
         let dataToDisplay = [];
         employeesToDisplay = formEmployeeToDisplay(employees);
         let table = document.querySelector("table");
-        editTable(table, employeesToDisplay, Object.keys(employeesToDisplay[0]), 'employees');
+        editTable(table, employeesToDisplay);
     }
 }
 
@@ -71,7 +71,7 @@ function sendDeleteRequest(id){
         })
         .then((response) => response.json())
         .then((data)=> {
-            window.location.href = `/departments/delete/${id}`;
+            window.location.href = `/departments`;
         })
         .catch((error) => console.log(error))
 }
@@ -99,6 +99,8 @@ function get_avg(department_name, employees_list){
             count += 1;
         }
     }
+    if(count==0)
+        return 0;
     return sum/count;
 }
 
@@ -114,7 +116,7 @@ function generateTable(table, data, keys, object){
         // Edit href
         let cell = row.insertCell();
         let a = document.createElement("a");
-        a.setAttribute("href", `/${object}/edit/${element['id']}`);
+        a.setAttribute("href", `/${object}/edit_department/${element['id']}`);
         let text = document.createTextNode("Edit");
         a.appendChild(text);
         cell.appendChild(a);
@@ -129,13 +131,14 @@ function generateTable(table, data, keys, object){
     }
 }
 
-function editTable(table, data, object){
-    for(let i = 1; i < data.length+1; i++) {
+function editTable(table, data){
+    for(let i = 1; i < data.length+2; i++) {
         let element = data[i-1];
         let row = table.rows[i];
         let cell = row.insertCell(1);
-        let text = document.createTextNode(element['Department']);
+        let text = document.createTextNode('0');
         text = document.createTextNode(get_avg(table.rows[i].cells[0].innerHTML, data) + "$");
+        console.log(text)
         cell.appendChild(text);
     }
 }

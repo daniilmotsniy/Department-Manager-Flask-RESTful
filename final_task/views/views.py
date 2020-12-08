@@ -49,3 +49,13 @@ def index():
     departments = Department.query.all()
     employees = Employee.query.all()
     return render_template("index.html", departments=departments, employees=employees)
+
+
+@user.route("/add_department", methods=["POST", "GET"])
+def add_department():
+    return render_template("add_department.html")
+
+
+@user.route("/departments/edit_department/<int:id>", methods=["POST", "GET"])
+def edit_department(id):
+    return render_template("department.html")

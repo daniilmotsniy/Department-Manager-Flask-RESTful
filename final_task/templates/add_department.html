@@ -5,11 +5,12 @@ Add department
 {% endblock %}
 
 {% block body %}
+<script src="{{ url_for('static', filename='js/add_department.js') }}"></script>
 <div class="container">
     <h3>Add new department</h3><br>
     <form method="post">
         <input type="text" class="form-control" id="name" name="name" placeholder="Name" required><br>
-        <input class="btn btn-lg btn-primary" type="submit" value="Add"><br>
+        <input class="btn btn-lg btn-primary" type="submit" value="Add" onclick="onClick()"><br>
     </form>
 </div>
 {% endblock %}
