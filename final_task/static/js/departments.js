@@ -119,6 +119,8 @@ function generateTable(table, data, keys, object){
         a.setAttribute("href", `/${object}/edit_department/${element['id']}`);
         let text = document.createTextNode("Edit");
         a.appendChild(text);
+        a.classList.add("btn-outline-info");
+        let cont = document.createElement("div");
         cell.appendChild(a);
         // Delete href
         cell = row.insertCell();
@@ -127,12 +129,13 @@ function generateTable(table, data, keys, object){
         a.setAttribute("href", "#");
         text = document.createTextNode("Delete");
         a.appendChild(text);
+        a.classList.add("btn-outline-danger");
         cell.appendChild(a);
     }
 }
 
 function editTable(table, data){
-    for(let i = 1; i < data.length+2; i++) {
+    for(let i = 1; i < table.rows.length; i++) {
         let element = data[i-1];
         let row = table.rows[i];
         let cell = row.insertCell(1);
