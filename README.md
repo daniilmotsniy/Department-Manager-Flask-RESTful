@@ -7,5 +7,3 @@ The web application should allow:
 - display a list of departments and the average salary for these departments
 - display a list of employees in the departments with an indication of the salary for each employee and a search field to search for employees born on a certain date or in the period between dates
 - change (add / edit / delete) the above data
-
--
